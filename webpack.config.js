@@ -12,26 +12,32 @@ const config = {
   ],
   output: {
     path: path.resolve(__dirname, 'dist'),
-    filename: 'bundle.js'
+    filename: 'bundle.js',
+    publicPath: '/'
   },
   devServer: {
     contentBase: './dist',
     open: true,
-    port: 3000,
+    port: process.env.PORT || 3000,
+    historyApiFallback: true,
   },
   module: {
     rules: [
       {
-        test: /\.css$/,
+        test: /\.(s[ac]|c)ss$/i,
         use: [
-          MiniCssExtractPlugin.loader,
+          {
+            loader: MiniCssExtractPlugin.loader,
+            options: { publicPath: "" }
+          },
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 1
+              importLoaders: 1,
             }
           },
-          'postcss-loader'
+          'postcss-loader',
+          'sass-loader'
         ]
       },
       {
@@ -40,23 +46,13 @@ const config = {
         exclude: /node_modules/
       },
       {
-        test: /\.scss$/,
-        use: [
-          MiniCssExtractPlugin.loader,
-          'css-loader',
-          'sass-loader'
-        ]
-      },
-      {
         test: /\.(png|jpe?g|gif|svg|ico)$/i,
         type: "asset"
-
       }
     ]
   },
   plugins: [
     new HtmlWebpackPlugin({
-
       template: "./src/index.html",
       favicon: "./src/images/favicon.ico"
     }),
@@ -74,7 +70,7 @@ const config = {
       '.js'
     ],
     alias: {
-      'react-dom': '@hot-loader/react-dom'
+      'react-dom': '@hot-loader/react-dom',
     }
   }
 };

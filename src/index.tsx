@@ -1,8 +1,17 @@
-import React from "react";
+import React, { StrictMode } from "react";
 import ReactDOM from "react-dom";
+import { Provider } from "react-redux";
+import "antd/dist/antd.css";
 
+import "./scss/index.scss";
 import App from "./App";
-import "./styles.scss";
+import store from "./store/store";
 
-var mountNode = document.getElementById("app");
-ReactDOM.render(<App />, mountNode);
+ReactDOM.render(
+  <StrictMode>
+    <Provider store={store}>
+      <App />
+    </Provider>
+  </StrictMode>,
+  document.getElementById("app"),
+);

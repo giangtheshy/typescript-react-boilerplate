@@ -5,11 +5,19 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const { CleanWebpackPlugin } = require('clean-webpack-plugin');
 const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 
+
+
+let entry = ['react-hot-loader/patch',
+  './src/index.tsx']
+if (process.env.NODE_ENV === "development") {
+  entry.push('webpack-dev-server/client?http://localhost:3000/')
+}
+// else {
+
+// }
+
 const config = {
-  entry: [
-    'react-hot-loader/patch',
-    './src/index.tsx'
-  ],
+  entry: entry,
   output: {
     path: path.resolve(__dirname, 'dist'),
     filename: 'bundle.js',
@@ -18,8 +26,17 @@ const config = {
   devServer: {
     contentBase: './dist',
     open: true,
-    port: process.env.PORT || 3000,
+    inline: true,
+    hot: true,
+    host: '0.0.0.0',
+    port: 3000,
+    public: `localhost:3000`,
     historyApiFallback: true,
+    disableHostCheck: true,
+    watchOptions: {
+      aggregateTimeout: 300,
+      poll: 1000,
+    }
   },
   module: {
     rules: [

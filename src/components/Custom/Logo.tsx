@@ -1,14 +1,14 @@
 import React from "react";
-import { useHistory } from "react-router-dom";
-import "./Custom.scss";
+import { useNavigate } from "react-router-dom";
+import "./Custom.less";
 
 interface Props {
   onClick: (value: string) => void;
 }
 const Logo: React.FC<Props> = ({ onClick }) => {
-  const history = useHistory();
+  const navigate = useNavigate();
   const handleClick = () => {
-    history.push("/");
+    navigate("/");
     onClick("/");
   };
   return (

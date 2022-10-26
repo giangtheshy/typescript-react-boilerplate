@@ -1,25 +1,26 @@
 import { Menu } from "antd";
 import { Header } from "antd/lib/layout/layout";
 import React, { useEffect, useState } from "react";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import theme from "../../config/theme";
 import Logo from "../Custom/Logo";
-import "./Header.scss";
+import "./Header.less";
 
 const HeaderCustom = () => {
   const [tab, setTab] = useState<string>("");
-  const history = useHistory();
+  const navigate = useNavigate();
 
   useEffect(() => {
-    setTab(history.location.pathname);
+    setTab(location.pathname);
   }, []);
   const handleClickTab = (value: string) => {
-    history.push(value);
+    navigate(value);
     setTab(value);
   };
   return (
     <Header className="header">
-      <Logo onClick={() => handleClickTab("/")} />
-      <Menu theme="dark" mode="horizontal" defaultSelectedKeys={[tab]} selectedKeys={[tab]}>
+    
+      <Menu theme={theme} mode="horizontal" defaultSelectedKeys={[tab]} selectedKeys={[tab]}>
         <Menu.Item key="/posts" onClick={() => handleClickTab("/posts")}>
           Posts
         </Menu.Item>

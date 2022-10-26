@@ -1,22 +1,24 @@
 import axios from "axios";
 import store from "../store/store";
 
+export const ENTRY_POINT = process.env.NODE_ENV === "production" ? "http://localhost:5000" : "http://localhost:5000";
 const axiosInstance = axios.create({
-  baseURL: process.env.NODE_ENV === "production" ? "https://khumuivietnam.herokuapp.com/" : "http://localhost:5000/api",
+  baseURL: `${ENTRY_POINT}/api/v1`,
 });
 
-axios.interceptors.request.use(function (config) {
-  const token = store.getState().product.products;
-  // config.headers.Authorization = token;
+axiosInstance.interceptors.request.use(function (config: any) {
+  const token = store.getState().user.token;
+
+  config.headers.Authorization = token;
 
   return config;
 });
 axiosInstance.interceptors.response.use(
-  (response) =>
+  (response: unknown) =>
     new Promise((resolve, reject) => {
       resolve(response);
     }),
-  (error) => {
+  (error: { response: { status: number } }) => {
     if (!error.response) {
       return new Promise((resolve, reject) => {
         reject(error);
@@ -24,7 +26,7 @@ axiosInstance.interceptors.response.use(
     }
     if (error.response.status === 403) {
       alert("Phiên đăng nhập đã hết hạn! Trang web sẽ tự động refresh để tiếp tục...");
-      window.location.reload();
+      // window.location.reload();
       return new Promise((resolve, reject) => {
         reject(error);
       });
